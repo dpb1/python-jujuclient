@@ -2045,8 +2045,10 @@ class StatusTranslator(object):
         name = d.pop('Name')
         ports = d.pop('Ports')
         tports = d.setdefault('Ports', [])
-        for p in ports:
-            tports.append("%s/%s" % (p['Number'], p['Protocol']))
+        # Workaround for lp:1425435
+        if ports:
+            for p in ports:
+                tports.append("%s/%s" % (p['Number'], p['Protocol']))
         svc_units[name] = self._translate(d)
 
     def _service(self, d):
